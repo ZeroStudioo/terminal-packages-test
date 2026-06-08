@@ -2,7 +2,7 @@ name: Build Packages
 
 on:
   workflow_dispatch:
-  # push:
+  push:
 
 permissions:
   contents: write
@@ -25,10 +25,19 @@ jobs:
         with:
           submodules: recursive
 
+      - name: Setup Android NDK
+        run: |
+          NDK_VERSION="r29"
+          NDK_ZIP="android-ndk-${NDK_VERSION}-linux.zip"
+          curl -L "https://dl.google.com/android/repository/${NDK_ZIP}" -o /tmp/ndk.zip
+          unzip -q /tmp/ndk.zip -d /github/home/lib/    
+
       - name: Build
         run: |
-          mkdir -p output
-          bash -x build.sh -a "${{ matrix.arch }}"
+         export ANDROID_NDK_HOME=/github/home/lib/android-ndk-r29
+         export NDK=/github/home/lib/android-ndk-r29
+         mkdir -p output
+         bash -x build.sh -a "${{ matrix.arch }}"
 
       - uses: actions/upload-artifact@v4
         with:
