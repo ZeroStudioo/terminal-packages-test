@@ -24,6 +24,11 @@ jobs:
       - uses: actions/checkout@v4
         with:
           submodules: recursive
+
+      - name: Enable FUSE
+        run: |
+         apt-get install -y fuse || true
+         modprobe fuse || true
         
       - name: Setup Android SDK
         uses: android-actions/setup-android@v3
