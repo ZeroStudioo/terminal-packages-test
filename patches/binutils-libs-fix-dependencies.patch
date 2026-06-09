@@ -7,7 +7,7 @@ Subject: [PATCH] fix: update patches for latest termux-packages
  build.sh | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/build.sh b/build.sh
+diff --git a/packages/binutils/build.sh b/packages/binutils/build.sh
 index cfbec6e..85e648e 100644
 --- a/build.sh
 +++ b/build.sh
