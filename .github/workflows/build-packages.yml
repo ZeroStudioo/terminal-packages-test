@@ -27,7 +27,7 @@ jobs:
           submodules: recursive
 
       - name: Cache built packages
-        uses: actions/cache@v4
+        uses: actions/cache@v5.0.5
         with:
           path: |
             /data/data/.built-packages
@@ -63,6 +63,15 @@ jobs:
           mkdir -p output
           bash -x build.sh -a "${{ matrix.arch }}"
 
+      - name: Rename debs (remove epoch colon)
+        run: |
+          find output -name "*.deb" | while read f; do
+            newname=$(echo "$f" | sed 's/:[0-9]*:/./g')
+            if [ "$f" != "$newname" ]; then
+              mv "$f" "$newname"
+            fi
+          done
+
       - uses: actions/upload-artifact@v4
         with:
           name: packages-${{ matrix.arch }}
@@ -85,7 +94,7 @@ jobs:
       - name: Install tools
         run: |
           sudo apt update
-          sudo apt install -y git gnupg curl
+          sudo apt install -y git gnupg curl dpkg
 
       - name: Import GPG key
         run: |
@@ -93,8 +102,14 @@ jobs:
 
       - name: Collect debs
         run: |
-          mkdir -p output/debs
-          find artifacts -name "*.deb" -exec ln -sf {} output/debs/ \;
+          mkdir -p repo-debs
+          # استعادة الأسماء الأصلية عند النسخ
+          find artifacts -name "*.deb" | while read f; do
+            basename=$(basename "$f")
+            # استعادة الـ epoch colon
+            original=$(echo "$basename" | sed 's/\([0-9]\)\.\([0-9]\{4\}\)/\1:\2/')
+            cp "$f" "repo-debs/$original"
+          done
 
       - name: Download termux-apt-repo
         run: |
@@ -105,8 +120,8 @@ jobs:
 
       - name: Create repository
         run: |
-          mkdir repo
-          bash ./termux-apt-repo output/debs repo stable main
+          mkdir -p repo
+          bash ./termux-apt-repo repo-debs repo stable main
 
       - name: Sign repository
         run: |
@@ -121,9 +136,11 @@ jobs:
             -o repo/dists/stable/InRelease \
             repo/dists/stable/Release
 
-      - name: Deploy Pages Branch
+      - name: Deploy to pages branch
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_branch: pages
           publish_dir: repo
+          keep_files: false 
+          force_orphan: true 
