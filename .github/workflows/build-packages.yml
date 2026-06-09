@@ -58,7 +58,7 @@ jobs:
           fi
           
       - name: Cache Gradle
-        uses: actions/cache@v4
+        uses: actions/cache@v5.0.5
         with:
           path: |
             /github/home/.gradle/caches
@@ -85,9 +85,11 @@ jobs:
           done
 
       - uses: actions/upload-artifact@v4
+        continue-on-error: true 
         with:
           name: packages-${{ matrix.arch }}
           path: output
+          retention-days: 1
 
   publish:
     needs: build
