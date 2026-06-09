@@ -16,7 +16,7 @@ jobs:
         arch:
           - aarch64
           - arm
-          
+
     container:
       image: ghcr.io/termux/package-builder:latest
       options: --privileged --device /dev/fuse
@@ -25,23 +25,43 @@ jobs:
       - uses: actions/checkout@v4
         with:
           submodules: recursive
-        
+
+      - name: Cache built packages
+        uses: actions/cache@v4
+        with:
+          path: |
+            /data/data/.built-packages
+            /github/home/.termux-build
+          key: termux-build-${{ matrix.arch }}-${{ hashFiles('packages/**') }}
+          restore-keys: |
+            termux-build-${{ matrix.arch }}-
+
       - name: Setup Android SDK
         uses: android-actions/setup-android@v3
 
+      - name: Cache NDK
+        uses: actions/cache@v4
+        with:
+          path: /github/home/lib/android-ndk-r29
+          key: android-ndk-r29
+
       - name: Setup Android NDK
         run: |
-          NDK_VERSION="r29"
-          NDK_ZIP="android-ndk-${NDK_VERSION}-linux.zip"
-          curl -L "https://dl.google.com/android/repository/${NDK_ZIP}" -o /tmp/ndk.zip
-          unzip -q /tmp/ndk.zip -d /github/home/lib/    
+          if [ ! -d /github/home/lib/android-ndk-r29 ]; then
+            NDK_VERSION="r29"
+            NDK_ZIP="android-ndk-${NDK_VERSION}-linux.zip"
+            curl -L "https://dl.google.com/android/repository/${NDK_ZIP}" -o /tmp/ndk.zip
+            unzip -q /tmp/ndk.zip -d /github/home/lib/
+          else
+            echo "NDK already cached, skipping download"
+          fi
 
       - name: Build
         run: |
-         export ANDROID_NDK_HOME=/github/home/lib/android-ndk-r29
-         export NDK=/github/home/lib/android-ndk-r29
-         mkdir -p output
-         bash -x build.sh -a "${{ matrix.arch }}"
+          export ANDROID_NDK_HOME=/github/home/lib/android-ndk-r29
+          export NDK=/github/home/lib/android-ndk-r29
+          mkdir -p output
+          bash -x build.sh -a "${{ matrix.arch }}"
 
       - uses: actions/upload-artifact@v4
         with:
