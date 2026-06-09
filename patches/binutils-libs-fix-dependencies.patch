@@ -9,8 +9,8 @@ Subject: [PATCH] fix: update patches for latest termux-packages
 
 diff --git a/packages/binutils/build.sh b/packages/binutils/build.sh
 index cfbec6e..85e648e 100644
---- a/build.sh
-+++ b/build.sh
+--- a/packages/binutils/build.sh
++++ b/packages/binutils/build.sh
 @@ -8,7 +8,7 @@ TERMUX_PKG_VERSION="2.46.0"
  TERMUX_PKG_REVISION=3
  TERMUX_PKG_SRCURL="https://mirrors.kernel.org/gnu/binutils/binutils-${TERMUX_PKG_VERSION}.tar.xz"
