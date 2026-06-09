@@ -58,7 +58,7 @@ COTG_PACKAGES__BASE=(
 
 # debug-only packages
 COTG_PACKAGES__DEBUG=(
-    "binutils-libs"
+    "binutils"
     "coreutils"
     "file"
     "libsqlite"
