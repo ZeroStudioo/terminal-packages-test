@@ -74,8 +74,14 @@ jobs:
           bash -x build.sh -a "${{ matrix.arch }}"
 
       - name: Show output structure
-        run: find output -type f -name "*.deb" | head -20 || echo "No debs found"
-
+        run: |
+          echo "=== output/ ==="
+          find output -type f | head -30
+          echo "=== termux-packages/output ==="
+          find termux-packages/output -type f -name "*.deb" | head -20 || echo "not found"
+          echo "=== /github/home/.termux-build ==="
+          find /github/home/.termux-build -name "*.deb" | head -20 || echo "not found"
+          
       - name: Rename debs (remove epoch colon)
         run: |
           find output -name "*.deb" | while read f; do
