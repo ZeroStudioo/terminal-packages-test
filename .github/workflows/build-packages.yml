@@ -107,7 +107,7 @@ jobs:
         with:
           name: packages-${{ matrix.arch }}
           path: output
-          retention-days: 1    
+          retention-days: 7    
 
   publish:
     needs: build
