@@ -32,7 +32,7 @@ jobs:
           path: |
             /data/data/.built-packages
             /github/home/.termux-build
-            termux-packages/output
+            output
           key: termux-build-${{ matrix.arch }}-${{ hashFiles('packages/**') }}
           restore-keys: |
             termux-build-${{ matrix.arch }}-
