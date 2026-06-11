@@ -101,6 +101,7 @@ usage() {
   echo "            This takes precendence over the repository provided using -r."
   echo "  -r        The repository where the built packages will be published."
   echo "            Defaults to '${COTG_REPO}'."
+  echo "  -a        the Architecture [ aarch64 or arm ]. "
   echo
   echo "  -h        Show this help message and exit."
 }
@@ -205,7 +206,7 @@ build_boostrap() {
     scribe_error_exit "Unable to switch from output dir: ${out_dir}"
 }
 
-while getopts "glr:h" opt; do
+while getopts "a:glr:h" opt; do
   case "$opt" in
   g) COTG_RELEASE="true" ;;
   l) COTG_LOCAL="true" ;;
