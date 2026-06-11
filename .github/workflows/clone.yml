@@ -1,25 +1,18 @@
-name: Clone from Source Repository
+name: Mirror Repository
 
 on:
   workflow_dispatch:
 
-permissions:
-  contents: write
-
 jobs:
-  clone:
+  mirror:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
-        with:
-          repository: Wadamzmail/terminal-packages
-          submodules: recursive
-          fetch-depth: 0
-
-      - name: Force push to current repository
+      - name: Clone source repository
         run: |
-          git remote set-url origin https://x-access-token:${{ secrets.PAT_TOKEN }}@github.com/${{ github.repository }}.git
-          git push origin --force --all
-          git push origin --force --tags
+          git clone --mirror https://github.com/Wadamzmail/terminal-packages.git repo.git
 
+      - name: Push mirror
+        run: |
+          cd repo.git
+          git push --mirror https://x-access-token:${{ secrets.PAT_TOKEN }}@github.com/Wadamzmail/terminal-packages-arm.git
