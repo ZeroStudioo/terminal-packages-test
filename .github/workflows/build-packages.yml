@@ -127,11 +127,8 @@ jobs:
         run: |
           mkdir -p output/aarch64 output/arm
           gh release download packages-${{ github.run_id }} \
-            --pattern "packages-aarch64.zip" --dir output/aarch64
-          gh release download packages-${{ github.run_id }} \
-            --pattern "packages-arm.zip" --dir output/arm
+            --pattern "packages-aarch64.zip" --dir output/aarch64        
           (cd output/aarch64 && unzip -o packages-aarch64.zip && rm packages-aarch64.zip)
-          (cd output/arm && unzip -o packages-arm.zip && rm packages-arm.zip)
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
