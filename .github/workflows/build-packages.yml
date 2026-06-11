@@ -107,9 +107,12 @@ jobs:
           done
           zip -0 ../packages-${{ inputs.arch }}.zip *.deb
 
-      - name: Delete existing release
+      - name: Delete release + tag
         run: |
-         gh release delete packages-${{ inputs.arch }} --yes || true
+         curl -X DELETE \
+         -H "Authorization: Bearer $GITHUB_TOKEN" \
+         -H "Accept: application/vnd.github+json" \
+         https://api.github.com/repos/${GITHUB_REPOSITORY}/git/refs/tags/packages-${{ inputs.arch }} || true
 
       - name: Upload to Release
         uses: softprops/action-gh-release@v2
