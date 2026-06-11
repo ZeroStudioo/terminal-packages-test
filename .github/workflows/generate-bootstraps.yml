@@ -81,12 +81,25 @@ jobs:
         run: |
           find output -type f | head -50
 
+      - name: Get release date
+        id: date
+        run: echo "date=$(date +'%Y.%-m.%-d')" >> $GITHUB_OUTPUT
+
+      - name: Generate SHA256
+        id: hash
+        run: |
+         cd output
+         sha256sum *.zip *.zip.9 > SHA256SUMS.txt
+         cat SHA256SUMS.txt
+
       - name: Upload Bootstrap Release
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: bootstrap-${{ github.run_id }}
-          name: Bootstrap Build ${{ github.run_id }}
-          files: |
-            output/*.zip
-            output/*.zip.9
-          fail_on_unmatched_files: false
+         tag_name: bootstrap-${{ github.run_id }}
+         name: Bootstrap ${{ steps.date.outputs.date }}
+         body_path: output/SHA256SUMS.txt
+         files: |
+          output/*.zip
+          output/*.zip.9
+          output/SHA256SUMS.txt
+         fail_on_unmatched_files: false
