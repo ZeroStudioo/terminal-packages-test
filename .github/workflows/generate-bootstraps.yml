@@ -38,6 +38,18 @@ jobs:
         run: |        
           sudo apt-get install -y bash git curl gnupg zip
 
+      - name: Install bootstrap dependencies
+        run: |
+         sudo apt-get update
+         sudo apt-get install -y \
+         brotli \
+         zip \
+         unzip \
+         xz-utils \
+         llvm \
+         findutils \
+         coreutils   
+
       - name: Prepare output dir
         run: |
          mkdir -p "output/${{ inputs.arch }}"
