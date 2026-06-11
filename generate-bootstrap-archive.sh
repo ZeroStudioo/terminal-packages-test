@@ -10,6 +10,7 @@ script_dir=$(dirname "$script")
 
 COTG_RELEASE="false"
 COTG_LOCAL="false"
+COTG_ARCH=""
 
 declare -a PATCHES=(
 
@@ -209,6 +210,7 @@ while getopts "glr:h" opt; do
   g) COTG_RELEASE="true" ;;
   l) COTG_LOCAL="true" ;;
   r) COTG_REPO="$OPTARG" ;;
+  a) COTG_ARCH="$OPTARG" ;;
   h)
     usage
     exit 0
@@ -249,7 +251,13 @@ echo "  Extra packages : ${COTG_EXTRA_PACKAGES[@]}"
 
 setup_termux_packages
 
-for arch in aarch64 arm; do
+if [[ -n "$COTG_ARCH" ]]; then
+  ARCHS=("$COTG_ARCH")
+else
+  ARCHS=(aarch64 arm)
+fi
+
+for arch in "${ARCHS[@]}"; do
   build_boostrap "$COTG_VARIANT" "$arch" "$COTG_REPO" "${COTG_EXTRA_PACKAGES[@]}" ||
     scribe_error_exit "Unable to build bootstrap for ${arch}"
 done
