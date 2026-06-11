@@ -1,0 +1,67 @@
+name: Build Bootstraps
+
+on:
+  workflow_dispatch:
+    inputs:
+      arch:
+        description: "Target architecture"
+        required: true
+        default: "aarch64"
+        type: choice
+        options:
+          - aarch64
+        #  - arm          
+
+      release:
+        description: "Release build?"
+        required: true
+        default: "false"
+        type: boolean
+
+permissions:
+  contents: write
+
+jobs:
+  bootstrap:
+    runs-on: ubuntu-latest
+
+    container:
+      image: ghcr.io/termux/package-builder:latest
+      options: --privileged --device /dev/fuse
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Install tools
+        run: |
+          apt update
+          apt install -y bash git curl gnupg zip
+
+      - name: Build Bootstrap
+        run: |
+          export COTG_REPO="https://wadamzmail.github.io/terminal-packages"
+          export COTG_OUTPUT_DIR="$(pwd)/output"
+
+          mkdir -p output
+
+          if [ "${{ inputs.release }}" = "true" ]; then
+            bash ./generate-bootstrap-archive.sh -g -r "$COTG_REPO" "${{ inputs.arch }}"
+          else
+            bash ./generate-bootstrap-archive.sh -r "$COTG_REPO" "${{ inputs.arch }}"
+          fi
+
+      - name: Show output
+        run: |
+          find output -type f | head -50
+
+      - name: Upload Bootstrap Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: bootstrap-${{ github.run_id }}
+          name: Bootstrap Build ${{ github.run_id }}
+          files: |
+            output/*.zip
+            output/*.zip.9
+          fail_on_unmatched_files: false
