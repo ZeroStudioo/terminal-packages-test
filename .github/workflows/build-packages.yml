@@ -124,6 +124,7 @@ jobs:
           name: Packages Build ${{ inputs.arch }}
           files: output/packages-${{ inputs.arch }}.zip
           fail_on_unmatched_files: false
+          overwrite: true 
 
   publish:
     needs: build
