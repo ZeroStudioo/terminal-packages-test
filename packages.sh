@@ -55,9 +55,7 @@ COTG_PACKAGES__BASE=(
     "unzip"
     "zip"
     
-    #AndroidIDE 
-    "jq" 
-    "openssh"
+
 )
 
 # debug-only packages
@@ -98,5 +96,11 @@ COTG_PACKAGES+=(
     # cmake and libllvm for Android
     # useful for Android SDK
     "cmake"
-    "libllvm"
+    "libllvm" 
+    
+    #AndroidIDE 
+    "jq" 
+    "libandroid-support"
+    "libandroid-glob" 
+    "openssh"
 )
