@@ -20,7 +20,7 @@ TERMUX_PACKAGE_NAME="com.termux"
 export TERMUX_PACKAGE_NAME
 
 # The package name of the intended application
-COTG_PACKAGE_NAME="dev.mutwakil.androidide"
+COTG_PACKAGE_NAME="andro.zero.studio"
 export COTG_PACKAGE_NAME
 
 # Path to the public key
@@ -38,7 +38,7 @@ TERMUX_PKG_API_LEVEL=28
 export TERMUX_PKG_API_LEVEL
 
 # The URL of the repository where the packages will be published
-COTG_REPO="https://Wadamzmail.github.io/terminal-packages"
+COTG_REPO="https://ZeroStudioo.github.io/terminal-packages"
 export COTG_REPO
 
 # All supported CPU ABIs
