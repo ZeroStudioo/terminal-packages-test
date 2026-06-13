@@ -102,5 +102,5 @@ COTG_PACKAGES+=(
     "jq" 
     "libandroid-support"
     "libandroid-glob" 
-  #  "openssh"
+    "openssh"
 )
