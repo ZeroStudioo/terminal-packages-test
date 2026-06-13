@@ -29,16 +29,22 @@ jobs:
           submodules: recursive
 
       - name: Cache built packages
+        id: cache-packages
         uses: actions/cache@v4
         with:
           path: |
             /data/data/.built-packages
-            /github/home/.termux-build    
-            output/${{ inputs.arch }}
-          key: termux-build-${{ inputs.arch }}-${{ hashFiles('packages/**') }}
+            /github/home/.termux-build
+            output/aarch64
+          key: termux-build-aarch64-${{ hashFiles('packages/**') }}
           restore-keys: |
-            termux-build-${{ inputs.arch }}-
+            termux-build-aarch64-
           save-always: true
+
+      - name: Check cache hit
+        run: |
+          echo "Cache hit: ${{ steps.cache-packages.outputs.cache-hit }}"
+          ls output/aarch64/ | head -10 || echo "output/aarch64 empty"
 
       - name: Cache Gradle
         uses: actions/cache@v4
