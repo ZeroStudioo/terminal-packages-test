@@ -50,6 +50,7 @@ COTG_PACKAGES__BASE=(
     "mandoc"
     "nano"
     "net-tools"
+    "openjdk-17"
     "openjdk-21"
     "patch"
     "unzip"
