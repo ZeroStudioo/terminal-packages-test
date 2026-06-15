@@ -4,13 +4,13 @@ Date: Mon, 15 Jun 2026 18:05:47 +0200
 Subject: [PATCH] openjdk 25 cleanup
 
 ---
- packages/java-25-openjdk/build.sh | 18 ++++++++++++++++++
+ packages/openjdk-25/build.sh | 18 ++++++++++++++++++
  1 file changed, 18 insertions(+)
 
-diff --git a/packages/java-25-openjdk/build.sh b/packages/java-25-openjdk/build.sh
+diff --git a/packages/openjdk-25/build.sh b/packages/openjdk-25/build.sh
 index e0184c3..45a1ec3 100644
---- a/packages/java-25-openjdk/build.sh
-+++ b/packages/java-25-openjdk/build.sh
+--- a/packages/openjdk-25/build.sh
++++ b/packages/openjdk-25/build.sh
 @@ -123,6 +123,24 @@ termux_step_make_install() {
  	mkdir -p $TERMUX_PREFIX/lib/jvm/java-25-openjdk/etc/profile.d
  	echo "export JAVA_HOME=$TERMUX_PREFIX/lib/jvm/java-25-openjdk/" > \
