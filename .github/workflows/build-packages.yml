@@ -89,8 +89,8 @@ jobs:
       - name: Show compiler errors
         if: failure()
         run: |
-          grep -A50 -B50 "C compiler cannot create executables" \
-          /github/home/.termux-build/krb5/build/config.log || true
+         find /github/home/.termux-build -name config.log \
+         -exec grep -H "C compiler cannot create executables" {} \;
 
       - name: Debug debs location
         if: always()
