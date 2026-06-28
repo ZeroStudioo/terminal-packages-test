@@ -10,7 +10,7 @@ jobs:
     steps:
       - name: Clone source repository
         run: |
-          git clone --mirror https://github.com/Wadamzmail/terminal-packages.git repo.git
+          git clone --mirror https://github.com/msmt2018/terminal-packages.git repo.git
 
       - name: Push mirror
         run: |
