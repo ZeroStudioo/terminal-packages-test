@@ -20,7 +20,7 @@ TERMUX_PACKAGE_NAME="com.termux"
 export TERMUX_PACKAGE_NAME
 
 # The package name of the intended application
-COTG_PACKAGE_NAME="com.zerodroid.studio"
+COTG_PACKAGE_NAME="com.zerostudio"
 export COTG_PACKAGE_NAME
 
 # Path to the public key
